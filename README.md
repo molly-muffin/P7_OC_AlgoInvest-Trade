@@ -28,10 +28,11 @@ Concevoir un algorithme qui maximisera le profit réalisé par les clients aprè
 *	Prérequis
 	1. Télécharger l'algorithme
 	2. Préparer un fichier `.csv` avec vos données 
-	| Nom de l'action | Coût par action (en euros) | Bénéfice (après 2 ans en %) |
-	| name | price | profit |
-	| name | price | profit |
-	| name | price | profit |
+	
+| Nom de l'action | Coût par action (en euros) | Bénéfice (après 2 ans en %) |
+| name | price | profit |
+| name | price | profit |
+| name | price | profit |
 
 
 *	Lancement
