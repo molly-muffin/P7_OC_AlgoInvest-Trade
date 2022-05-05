@@ -34,7 +34,7 @@ def create_list(file):
 	for action in csvreader:
 		total_lines += 1
 		if float(action[PRICE]) > 0 and float(action[PROFIT_PERCENT]) > 0:
-			actions.append([action[NAME], float(action[PRICE]), float(action[PROFIT_PERCENT]), float(action[PRICE]) * float(action[PROFIT_PERCENT]) / 100])
+			actions.append([action[NAME], round(float(action[PRICE])), round(float(action[PROFIT_PERCENT])), round(float(action[PRICE]) * float(action[PROFIT_PERCENT])) / 100])
 		else:
 			invalid_lines += 1
 	file.close()
@@ -42,8 +42,7 @@ def create_list(file):
 	return actions, total_lines, invalid_lines
 
 
-@profile
-def optimized(data):
+def optimized_simple(data):
 	actions = sorted(data, key=lambda x: x[PROFIT_PERCENT])
 	actions_combination = []
 	expense = 0
@@ -55,6 +54,45 @@ def optimized(data):
 			expense += action[PRICE]
 
 	return actions_combination
+
+
+
+def optimized_dynamic(wallet, data):
+	number_of_actions = len(data)
+	actions_combination = []
+
+	matrix = [[0 for x in range(wallet + 1)] for x in range(number_of_actions +1)]
+
+	for i in range(1, number_of_actions + 1):
+		for x in range(1, wallet + 1):
+			if data[i-1][PRICE] <= x:
+				matrix[i][x] = max(data[i-1][PROFIT_EURO] + matrix[i-1][x-data[i-1][PRICE]], 
+				matrix[i-1][x])
+			else:
+				matrix[i][x] = matrix[i-1][x]
+	
+	while wallet >= 0 and number_of_actions >= 0:
+		if matrix[number_of_actions][wallet] != matrix[number_of_actions-1][wallet]:
+			actions_combination.append(data[number_of_actions-1])
+			wallet -= data[number_of_actions-1][PRICE]
+		number_of_actions -= 1
+ 
+	return actions_combination
+
+def choice(data):
+	choice = None
+	while not choice:
+		choice = input("Choisir un algorithme :\n\n"
+					   "[1] Optimized Simple (faster)\n"
+					   "[2] Optimized Dynamic (better)\n\n"
+					   "--> ")
+
+		if choice == '1':
+			algorithm = optimized_simple(data)
+		elif choice == '2':
+			algorithm = optimized_dynamic(BUDGET_MAX, data)
+
+	return algorithm
 
 
 ############
@@ -71,7 +109,7 @@ def main():
 		try:
 			print("\n** Traitement des données **\n")
 			actions, total_lines, invalid_lines = create_list(sys.argv[1])
-			actions_combination = optimized(actions)
+			actions_combination = choice(actions)
 		except FileNotFoundError:
 			print(f"Aucun fichier ou dossier avec ce nom : '{sys.argv[1]}'\n")
 			sys.exit(0)
@@ -83,6 +121,9 @@ def main():
 
 	print(f"\nVous gagnerez : {round(sum(action[PROFIT_EURO] for action in actions_combination), 2)} € au bout de deux ans pour un placement de {round(sum(action[PRICE] for action in actions_combination), 2)}€.")
 
+	total_investment = sum([(x[PRICE]) for x in actions_combination])
+	total_profit = sum([(x[PROFIT_EURO]) for x in actions_combination])
+	print(f"\nCe qui représente un retour sur investissement de : {round(total_profit / total_investment * 100, 2)}% \n")
 
 start = time.perf_counter()
 if __name__ in "__main__":
