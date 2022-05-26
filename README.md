@@ -37,11 +37,11 @@ Concevoir un algorithme qui maximisera le profit réalisé par les clients aprè
 
 
 *	Lancement
-Lancer la commande suivant : ``bruteforce.py <nom de votre fichier> ``
+Lancer la commande suivant : ``bruteforce.py <nom de votre fichier> `` or ``bruteforce.py <nom de votre fichier> ``
 
 
 ## Ce que j'ai appris :
-A COMPLETER
+J'ai appris à générer un algorithm en fonction du besoin en calculant la complexité de temps et de mémoire.
 
 > Laureenda Demeule
 > OpenClassroom
