@@ -18,7 +18,6 @@ BUDGET_MAX = 500
 #################
 ### FUNCTIONS ###
 #################
-@profile
 def create_list(file):
 	file = open(file)
 	reader = csv.reader(file)
@@ -28,7 +27,6 @@ def create_list(file):
 
 	return actions
 
-@profile
 def bruteforce(data):
 	best_profit = 0
 	best_comb = None
@@ -49,7 +47,6 @@ def bruteforce(data):
 ############
 ### MAIN ###
 ############
-@profile
 def main():
 	if len(sys.argv) < 2:
 		print("Vous devez indiquer un fichier en argument.")

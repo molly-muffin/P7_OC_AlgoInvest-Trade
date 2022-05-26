@@ -10,10 +10,10 @@ Concevoir un algorithme qui maximisera le profit réalisé par les clients aprè
 | Etapes | Avancement |
 | ------ | ------ |
 | bruteforce.py | **Terminé** |
-| README.md | **En cours** |
-| optimized.py | **En cours** |
-| Documentation de l'algorithme | **En cours** |
-| backtesting et optimisation | **En cours** |
+| README.md | **Terminé** |
+| optimized.py | **Terminé** |
+| Documentation de l'algorithme | **Terminé** |
+| backtesting et optimisation | **Terminé** |
 
 ### L'algorithme :
 *	Parcourt la liste d'actions. 

@@ -5,6 +5,7 @@
 import sys
 import csv
 import time
+from itertools import combinations
 
 
 #################
@@ -42,22 +43,22 @@ def create_list(file):
 	return actions, total_lines, invalid_lines
 
 
-def optimized_simple(data):
-	actions = sorted(data, key=lambda x: x[PROFIT_PERCENT])
-	actions_combination = []
-	expense = 0
+def algorithm_bruteforce(data):
+	best_profit = 0
+	best_comb = None
 
-	while actions:
-		action = actions.pop()
-		if action[PRICE] + expense < BUDGET_MAX:
-			actions_combination.append(action)
-			expense += action[PRICE]
+	for action in range(len(data)):
+		for comb in combinations(data, action + 1):
+			price = sum([action[PRICE] for action in comb])
+			profit = sum([action[PROFIT_EURO]for action in comb])
+			if price <= BUDGET_MAX and profit > best_profit:
+				best_profit = profit
+				actions_combination = comb
 
-	return actions_combination
+	return  actions_combination
 
 
-
-def optimized_dynamic(wallet, data):
+def algorithm_optimized(wallet, data):
 	number_of_actions = len(data)
 	actions_combination = []
 
@@ -79,18 +80,19 @@ def optimized_dynamic(wallet, data):
  
 	return actions_combination
 
+
 def choice(data):
 	choice = None
 	while not choice:
 		choice = input("Choisir un algorithme :\n\n"
-					   "[1] Optimized Simple (faster)\n"
-					   "[2] Optimized Dynamic (better)\n\n"
+					   "[1] Algorithme Bruteforce (combination)\n"
+					   "[2] Algorithme Optimized (dynamic)\n\n"
 					   "--> ")
 
 		if choice == '1':
-			algorithm = optimized_simple(data)
+			algorithm = algorithm_bruteforce(data)
 		elif choice == '2':
-			algorithm = optimized_dynamic(BUDGET_MAX, data)
+			algorithm = algorithm_optimized(BUDGET_MAX, data)
 
 	return algorithm
 
